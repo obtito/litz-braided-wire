@@ -1,0 +1,18 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.ipynb_checkpoints/
+
+# Node / website
+node_modules/
+dist/
+.vitepress/cache/
+.vitepress/dist/
+
+# macOS / editor
+.DS_Store
+
+# local-only claude settings (skills are tracked, local settings are not)
+.claude/settings.local.json
