@@ -76,14 +76,31 @@ np.savetxt("data/q1_jr_allmethods.csv",
            delimiter=",", header="r_m,FD_J,exact_J", comments="")
 
 # ---------- 图 1：截面电流密度云图 + 表层放大 ----------
+# 修复记录：gouraud 必须传「子集节点+重映射三角形」，否则轴按全空气域定标、导线缩成色斑；
+# 且共享色标必须显式 norm（两面板各自自适应会造成同半径不同色）。
 fig, axes = plt.subplots(1, 2, figsize=(9.2, 4.4))
 Jmm = J_node / 1e6  # A/mm²
-for ax, (rmin, title) in zip(axes, [(0.0, "全截面 |J| 分布"),
-                                    (0.75e-3, "表层放大（0.75–1.0 mm）")]):
+r_node = np.hypot(verts[:, 0], verts[:, 1])
+cu_tris = tris[in_cu]
+used_all = np.unique(cu_tris)
+vmax = float(Jmm[used_all].max())
+norm = plt.Normalize(vmin=0.0, vmax=vmax)
+for ax, (rmin, title, half) in zip(
+        axes, [(0.0, "全截面 |J| 分布", 1.35e-3),
+               (0.75e-3, "表层放大（0.75–1.0 mm）", None)]):
     sel = in_cu & (np.hypot(cent[:, 0], cent[:, 1]) >= rmin)
-    tpc = ax.tripcolor(verts[:, 0] * 1e3, verts[:, 1] * 1e3, tris[sel], Jmm,
-                       shading="gouraud", cmap="viridis")
+    tri_sel = tris[sel]
+    used, inv = np.unique(tri_sel, return_inverse=True)
+    tnew = inv.reshape(-1, 3)
+    tpc = ax.tripcolor(verts[used, 0] * 1e3, verts[used, 1] * 1e3, tnew,
+                       Jmm[used], shading="gouraud", cmap="viridis", norm=norm)
     ax.set_aspect("equal")
+    if half:
+        ax.set_xlim(-half * 1e3, half * 1e3)
+        ax.set_ylim(-half * 1e3, half * 1e3)
+    else:
+        ax.set_xlim((rmin - 0.08e-3) * 1e3, 1.08e-3 * 1e3)
+        ax.set_ylim(-0.33, 0.33)
     ax.set_title(title)
     ax.set_xlabel("x [mm]")
     ax.set_ylabel("y [mm]")
@@ -101,11 +118,13 @@ ax = axes[0]
 # FEM 沿 +x 采样（用 q1_fem_J_r.csv 已有的更省事——此处重采样保持自包含）
 from q1_solid.fem2d_skfem import sample_jr
 r_fem, jr_fem = sample_jr(basis, a_vec, v)
+np.savetxt("data/q1_fem_J_r.csv", np.column_stack([r_fem, jr_fem]),
+           delimiter=",", header="r_m,J_amplitude", comments="")
 ax.plot((r_fem[2:] * 1e3), jr_fem[2:] / 1e6, color=C_FEM, lw=2, label="FEM (scikit-fem, P2)")
 ax.plot(r_fd * 1e3, jr_fd / 1e6, color=C_FD, lw=1.4, ls="--", label="径向 FD (N=2048)")
 ax.plot(r_fd * 1e3, jr_exact / 1e6, color=C_EX, lw=1.2, ls=":", label="精确 Bessel 解")
 ax.axvspan((A - skin_depth(F0)) * 1e3, A * 1e3, color=C_FEM, alpha=0.08)
-ax.text((A - skin_depth(F0) / 2) * 1e3, jr_fem.max() / 1e6 * 0.5,
+ax.text((A - skin_depth(F0) / 2) * 1e3, jr_fd.max() / 1e6 * 0.5,
         "δ 层", ha="center", fontsize=9, color=INK)
 ax.set_xlabel("r [mm]"); ax.set_ylabel("|J_z| [A/mm²]")
 ax.set_title("(a) 沿半径的电流密度分布")
@@ -180,7 +199,9 @@ axes[0].plot(fs / 1e3, fd_f, "s", color=C_FD, ms=7, label="径向 FD (N=2048)")
 axes[0].plot(fs / 1e3, fem_f, "o", color=C_FEM, ms=7, mfc="none", mew=1.8, label="2D FEM")
 axes[0].set_xscale("log")
 axes[0].set_ylabel("R_ac/R_dc")
-axes[0].set_title("图 Q1-4　频率扫描（50 kHz – 1 MHz）")
+err_max = max(abs(f / e - 1) for f, e in zip(fem_f, exact_f)) * 100
+err_at = fs[int(np.argmax([abs(f / e - 1) for f, e in zip(fem_f, exact_f)]))] / 1e3
+axes[0].set_title(f"图 Q1-4　频率扫描（FEM 最大偏差 {err_max:.2f}% @ {err_at:.0f} kHz；FD ≤0.0031%）")
 axes[0].legend(frameon=False, fontsize=9)
 deltas = [skin_depth(f) * 1e6 for f in fs]
 axes[1].plot(fs / 1e3, deltas, "o-", color=C_FEM, lw=2, ms=6)
@@ -205,7 +226,7 @@ for ax, (rmin, title) in zip(axes, [(0.0, "导线及近场网格（±1.2 mm 视�
     ylim = 0.3 if rmin else 1.2
     ax.set_ylim(-ylim, ylim)
     ax.set_title(title); ax.set_xlabel("x [mm]"); ax.set_ylabel("y [mm]")
-fig.suptitle("图 Q1-5　网格策略：距表面距离场加密（refine=1 基准：表面 h≈0.45δ≈66.5 µm，逐层过渡到 3 mm）",
+fig.suptitle("图 Q1-5　网格策略：距离场加密（refine=1：表面目标 0.45δ=66.5 µm，实测中位 ≈91 µm；逐层过渡到 3 mm）",
              y=1.00, color=INK)
 fig.savefig(f"{FIGDIR}/q1_fig5_mesh.png", bbox_inches="tight")
 plt.close(fig)

@@ -203,9 +203,9 @@ P̄ = (1/P)∫₀ᴾ P₂D(z)dz ≈ Σ_s w_s·P₂D(z_s)，每站自动给出：
 
 ## 十、存疑引用清单（论文引用前必须核对）
 
-1. **Liu et al. 2025 IJAMT 卷期页码**（摘要读到但批评者对 vol/issue 存疑）——引用前查 Springer 页面确认。
-2. `ryz.ece.illinois.edu` 两个 PDF 是个人站镜像——终稿改引 IEEE DOI。
-3. Rosskopf 论文走 ResearchGate 页——改引 IEEE TPEL DOI。
+1. ~~**Liu et al. 2025 IJAMT 卷期页码**~~ ✅ 已核验（2026-09-25）：138(11-12):5877-5890，见 paper/refs/LITSEARCH.md。
+2. ~~`ryz.ece.illinois.edu` 两个 PDF 是个人站镜像~~ ✅ IEEE DOI 已定：10.1109/63.750181 / 10.1109/apec.2014.6803681。
+3. ~~Rosskopf 论文走 ResearchGate 页~~ ✅ IEEE TPEL DOI：10.1109/tpel.2013.2293847（Ferreira 1994/1992 亦已核验，真实存在）。
 4. Pyrhonen 引用 Archive.org 扫描本——终稿引正式出版版本（Wiley 2nd ed.）。
 5. ARS README 的「Zhao 2026 ~147k 幻觉引用」统计未验证——不用。
 6. TU Delft Bessel PDF、Ferreira IEEE 页、Dowell 未逐字读全文——只引不依赖细节。

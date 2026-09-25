@@ -109,24 +109,15 @@ def solve(mesh, ind_cu, f=F0, i_rms=I_RMS, a=1e-3):
 
 
 def sample_jr(basis, a_vec, v, f=F0, a=1e-3, npts=400):
-    """沿 +x 半径采样 |J(r)|（P2 插值，失败则退化线性）。"""
+    """沿 +x 半径采样 |J(r)|（P2 插值，skfem 12.x 单参数调用；失败显式报错）。"""
     w_omega = 2 * math.pi * f
-    rs = np.linspace(0, a, npts)
-    try:
-        interp = basis.interpolator(a_vec)
-        vals = interp(rs[None, :].copy(), np.zeros_like(rs)[None, :])
-        jr = np.abs(SIGMA * (1j * w_omega * np.asarray(vals, dtype=complex) + v))
-    except Exception:
-        # 退化：最近节点线性插值
-        dist = np.hypot(*basis.mesh.p)
-        xcoord = basis.doflocs[0]
-        ycoord = basis.doflocs[1]
-        r_dof = np.hypot(xcoord, ycoord)
-        onx = np.abs(ycoord) < 1e-9
-        jr = np.interp(rs, r_dof[onx], np.abs(a_vec[onx]))
+    rs = np.linspace(0.0, a, npts)
+    pts = np.vstack([rs, np.zeros_like(rs)])  # skfem 要 (dim, npts)
+    vals = np.asarray(basis.interpolator(a_vec)(pts), dtype=complex)
+    jr = np.abs(SIGMA * (-(1j * w_omega * vals + v)))
+    assert jr.max() > 1e3, f"J 采样异常 max={jr.max():.3e}"
     jr[0] = jr[1]
     return rs, jr
-
 
 def exact_ratio(a=1e-3, f=F0):
     from scipy.special import jv
