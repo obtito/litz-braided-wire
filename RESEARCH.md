@@ -1,7 +1,7 @@
 # 三维拓扑编织 Litz 线黑客松 —— 研究汇总与决策文档
 
 > 生成于 2026-09-25。由 13 个并行研究 agent（9 角度扫描 + 完备性批评）+ 人工甄别整合而成。
-> 72 条发现中 64 条已逐一验证（README/文档/论文实际读取）；未验证条目已标注。
+> 72 条发现经 7 批对抗复审（58 确认 / 13 部分 / 0 错误 / 0 编造）；修正已就地标注【审计勘误】。详见《研究原始汇总.md》顶部审计层。
 > 原始逐条记录见 [研究原始汇总.md](研究原始汇总.md)。
 
 ---
@@ -59,12 +59,12 @@
 | **otvam/litz_wire_losses_twisting** | BSD-2, MATLAB 无工具箱 | **Q3/Q4 核心数学**：绞合=股阻抗矩阵上的置换矩阵 → 并联均流求解 → Bessel 解析丝损；含 straight/twisted/random 三脚本；COMPEL2017 论文 PDF 附带。逻辑可 1 天移植 Python |
 | **ethz-pes/litz_wire_losses_fem_matlab** | BSD-2 | 粗网格场积分 (∫J², ∫H²) → Bessel 丝损，网格无关趋肤深度，MHz 级有效——快速代理模型 |
 | **ethz-pes/litz_wire_homogenization_comsol_matlab** | BSD-2 | 复数等效 μ/σ 均质化（<2% 误差至 MHz）；需 COMSOL，**算法思想移植到 NGSolve** |
-| **OpenMagnetics/cci_coords** | 无(数据) | N 圆入圆最优堆积坐标——Q2 横截面/逐站截面的现成丝心坐标（基于 Magdeburg packing 库） |
+| **OpenMagnetics/cci_coords** | 无(数据) | N 圆入圆最优堆积坐标——Q2 横截面/逐站截面的现成丝心坐标（原 Magdeburg hydra 站已迁移至 **packomania.com/cci**，更新至 N=2600） |
 | **DeloongZhang/act-braiding-framework** | Apache-2.0 | **「拓扑→事件→轨迹」参考实现**：M×N 载纱器网格、4 步法运动动画、fiberize 生成 3D 纱线几何、Open3D 可视化、JSON 工程；PySide6/Open3D 全 mac 原生；Abaqus 部分可跳过 |
 | DeloongZhang/Virtual-Fiber-Braiding-Simulation-ABAQUS | 无 | 4 步法 quasi-fiber 级仿真（Abaqus 依赖，仅作算法参考） |
 | louisepb/TexGen | GPL-2.0 | 纺织几何建模（纱线中心线→实体→体网格）；脚本 API 可用 |
 | SageMath `sage.groups.braid` | GPL | 辫群现成机器：`BraidGroup(n)`、Tietze 词、`.permutation()`、纯辫方法、`.plot3d()`；重依赖，用 CoCalc/sagecell 或仅引用其 API 设计 |
-| 3-manifolds/Spherogram | GPL-2.0+ | `pip install spherogram`；辫闭包/连接不变量做拓扑健全性检查 |
+| 3-manifolds/Spherogram | GPL-2.0+ | `pip install spherogram`；辫闭包 `Link(braid_closure=<Tietze表>)`/`braid_word()`；**审计勘误：包内无辫→置换工具**（grep 全源码确认），置换功能在 SageMath Braid |
 | rexgreenway/braid-visualiser | MIT | `pip install braidvisualiser`；matplotlib 画 2D 辫图（报告插图） |
 | jeanluct/braidlab | GPL-3.0 | MATLAB 辫群包（macOS 二进制）；法式/正则形 |
 | marinmersenne2357/openscad-maypole | 无(参考) | 完整 maypole 编织机 OpenSCAD 模型（角齿轮/载纱器/动画）——Q4 可制造性讨论素材 |
@@ -95,10 +95,12 @@
 **核心矛盾**：2D 横截面模型对「绞合/编织」天然失明——一个 z 站的截面无法区分「直丝束」和「螺旋丝束」。保真度阶梯（成本递增）：
 
 **L0 解析丝损模型**（秒级）
-Ferreira/Umetani Kelvin 函数丝因子：
-- F(g_s) = g_s(ber·bei′−bei·ber′)/(2(ber′²+bei′²))（趋肤）
-- K(g_s) = −2(ber·bei′−bei·ber′)/(g_s(ber²+bei²)) − 1（邻近）
-- g_s = d_s·√(πfμ₀σ)；`scipy.special.kelvin` 直接算 ber/bei。
+Ferreira/Umetani Kelvin 函数丝因子（**已按数值审查修正**：K 的符号与论证变量，
+恒等式 F(g)=Re[(x/2)J₀(x)/J₁(x)]|_{a/δ=g/√2} 数值验证至 1e-16）：
+- F(g) = g(ber·bei′−bei·ber′)/(2(ber′²+bei′²))（趋肤）
+- K(g) = **+**2(ber·bei′−bei·ber′)/(g(ber²+bei²)) − 1（邻近；原转录 −2 会使 K→−2≠0）
+- g = d·√(πfμ₀σ/2) = √2·(d/2δ)（**不是** d/δ；校验：d=0.2mm@200kHz → g=0.957，F=1.00435
+  = 精确 Bessel 在 a/δ=0.677 的值）；`scipy.special.kelvin` 直接算 ber/bei。
 用于 Q2 丝径权衡曲线和一切交叉验证。
 
 **L1 置换矩阵法**（Guillod COMPEL2017，分钟级）——Q3 优化内环
@@ -129,11 +131,11 @@ P̄ = (1/P)∫₀ᴾ P₂D(z)dz ≈ Σ_s w_s·P₂D(z_s)，每站自动给出：
 ## 五、Q2：设计准则（公式已核，全文已读）
 
 - **Sullivan & Zhang APEC2014「Simplified Design Method for Litz Wire」**（免费 PDF ryz.ece.illinois.edu + elektrisola.com 镜像）：
-  - 推荐丝数 n_e = k·δ²/(b·N_s)，k：单级绞合/真编织=1.0，两三级成缆=1.33，不绞=2.0；
+  - 推荐丝数 n_e = k·δ²·**b**/N_s（b 在**分子**；k=√(192(F_R−1))/(πd_s³)，按丝径成本优化的列表常数，Table I，130–115000 mm⁻³）【审计勘误：原转录 k=1.0/1.33/2.0 构造系数系误记，已删】；
   - 首级最多丝数 n₁,ₘₐₓ = 4δ²/d_s²；每级 4–5 束；
-  - 好设计 d_s ≤ δ/2~δ/4；近邻-only 因子 F_R = 1+(πnN_s)²d_s⁶/(192δ⁴b²)；
+  - 好设计 d_s ≤ δ（典型取 δ/4 或更小）；近邻-only 因子 F_R = 1+(πnN_s)²d_s⁶/(192δ⁴b²)；
   - 圆柱均匀场涡流损 P = πℓd⁴/(64ρ)(dB/dt)² → 损耗因子 ∝ n²d_s⁶。
-- **Umetani et al. TIA 2021**（冈山大，免费 PDF 已读）：多级绞合全解析模型（Kelvin F/K 闭式 + 有效电阻率 ρ/m，m=捻距比），**式(51/56/57) 给出「最小捻距条件」——束级邻近损耗可忽略的可计算充分判据**（Q4 判据组件）。其参考文献表钉死了整个学派谱系（Dowell1966→Ferreira1992/94→Sullivan1999/2001→Nan&Sullivan→Rosskopf2014→Sullivan&Zhang2014）。
+- **Umetani et al. TIA 2021**（IEEE TIA 57(3), DOI 10.1109/TIA.2021.3063993，免费 PDF 已读）：多级绞合全解析模型（Kelvin F/K 闭式，论证变量 **γ_s=(d_s/2)·√(ωμ₀σ)=d_s·√(πfμ₀σ/2)**，半径制；m 为长度比因子乘在束电阻上，ρ_eff 见其式(13)【审计勘误：原 ρ/m 简写不准】），**式(51/56/57) 给出「最小捻距条件」——束级邻近损耗可忽略的可计算充分判据**（Q4 判据组件）。其参考文献表钉死了整个学派谱系（Dowell1966→Ferreira1992/94→Sullivan1999/2001→Nan&Sullivan→Rosskopf2014→Sullivan&Zhang2014）。
 - **Zhang/White/Kassakian MIT APEC2014**（免费 PDF 已读）：P = F(f)·I²R_dc + G(f)·|H|² 分解 + PEEC 细丝法（比 FEM 快数量级，1 MHz 离散误差 <0.1%）；其捻距敏感性扫描就是 Q3 模板。
 - **本题设计数（自算）**：A_cu=5 mm²（J=4 A/mm²）；d=0.05 mm→N=2546（n₁max=35，3 级）；d=0.071→N≈1265；d=0.1→N=637；**d=0.2→N=159（仿真甜点）**；d=0.25→N=102。
 - 束径估计：铜填充率（含漆膜+成缆）实测范围 ~0.30–0.60（粗略），取 0.5 时 D_bundle≈3.57 mm。横截面丝心坐标直接用 cci_coords。
@@ -151,7 +153,7 @@ P̄ = (1/P)∫₀ᴾ P₂D(z)dz ≈ Σ_s w_s·P₂D(z_s)，每站自动给出：
   3. 多级 S/Z 换向成缆（部分径向）
   4. 管状编织（双螺旋族；预期≈单级绞合——**反直觉论点，值得专门一节**）
   5. 真三维编织（track-and-column；径向完全遍历）
-- 敏感性：换位周期 Roebel 经验 13–17 倍丝宽起、越短越好直到弯折/制造极限（Goldacker 2014 arXiv:1406.4244 + Wang 2022）；编织角通过 1/cos α 影响 Rdc、通过换位速率影响邻近损耗——存在最优 α 曲线。
+- 敏感性：换位周期越短越好直到弯折/制造极限（定性成立；**审计勘误**：Goldacker 表内换位长/丝宽比实为 ~22–67（115.7/188/125.8/90/300/300mm 六缆），「13–17 丝宽」经验无出处已删；Wang 2022 仅可安全引用「比简单叠带损耗低」）；编织角通过 1/cos α 影响 Rdc、通过换位速率影响邻近损耗——存在最优 α 曲线。
 - 记录：planning-with-files 的 findings.md 逐行追加（参数→Rac/Rdc→决策），论文的调优日志直接导出。
 
 ---
@@ -164,7 +166,7 @@ P̄ = (1/P)∫₀ᴾ P₂D(z)dz ≈ Σ_s w_s·P₂D(z_s)，每站自动给出：
 完美 ⇔ ①每丝行是位置的均匀重排（Latin 方性质；Berger 循环赛=经典构造：每步整体轮转 N−1 槽）；
 ②φ-矩相等：对与泄漏场多极展开匹配的基 Φ={r, rcosθ, rsinθ, r², r²cos2θ, r²sin2θ,…}，Σ_s Φ(pos_k(s)) 对所有丝 k 相等；
 ③标量距离 D = max_{i,j}|ΣΦ_i−ΣΦ_j|/max Φ → 0（论文报告的「换位充分性」）。
-（经典定义出处：Pyrhonen 教科书"perfect transposition ⇔ all subconductor currents remain the same"；所有标准 litz 损耗模型都建立在此假设上——Nottingham 博士论文原话"all previous models…under the condition of perfect transposition"。）
+（经典定义出处：Pyrhonen 教科书（Wiley 2nd ed. 2014, ISBN 978-1-118-70159-1）称完美换位（Roebel/litz）有效抑制趋肤——「各支路电流相等」为意译概括，非原句；所有标准 litz 损耗模型都建立在此假设上——Nottingham 博士论文原话"all previous models…under the condition of perfect transposition"。）
 
 **拓扑层（辫群）**：交叉序列=braid word w=σ_{i1}^{±1}σ_{i2}^{±1}…∈B_N（关系 σᵢσᵢ₊₁σᵢ=σᵢ₊₁σᵢσᵢ₊₁，|i−j|≥2 交换）。每站截面状态=w 前缀在 B_N→S_n 满同态下的像（σᵢ↦(i,i+1)）。**周期缆完美 ⇔ w^p ∈ P_n（纯辫=各丝回原位）且 ⟨π(w)⟩ ≤ S_n 传递作用（每丝到达每槽）**。工具：SageMath/braidlab 法式判定；Word problem 可解。
 
