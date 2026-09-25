@@ -1,0 +1,215 @@
+{
+ "meta": {
+  "f_Hz": 200000.0,
+  "delta_um": 147.77165489999476,
+  "A_cu_mm2": 5.0,
+  "I_rms_A": 20.0,
+  "R_dc_bundle_mohm_per_m": 3.4482758620689653,
+  "grid": "linspace(0.06,0.40,35) mm + d=0.2239 mm (design)",
+  "hex_numbers": "3k(k+1)+1, k=0..26 (task list k<=20 extended per definition to cover N_exact(0.06mm)=1768 -> N=1801)"
+ },
+ "design_point": {
+  "d_mm": 0.22389180675340853,
+  "N_hex": 127,
+  "beta": 1.5151201149160065,
+  "F_skin": 1.0068241874260895,
+  "ratio_L1": 4.170562249777256,
+  "imbalance_L1": 4.142294456035212,
+  "L1_avg_ref": 3.494661082695355,
+  "fill": 0.7222984332380126,
+  "OD_mm": 2.9688053575501976,
+  "R_ac_L1_ohm_per_m": 0.01438124913716295,
+  "P_L1_W_per_m": 5.75249965486518
+ },
+ "argmin_ratio_L1": {
+  "d_actual_mm": 0.4148004314573264,
+  "d_req_mm": 0.37,
+  "N_hex": 37,
+  "ratio_L1": 3.4291303143206284,
+  "caveat": "argmin sits at the COARSE end where L1 filament bias is largest (F_skin=1.076, beta=2.8) — do NOT read as 'thicker is better'; see headline_finding"
+ },
+ "argmax_ratio_L1": {
+  "d_actual_mm": 0.19408711707847384,
+  "N_hex": 169,
+  "ratio_L1": 4.649144593378606
+ },
+ "trend": {
+  "coarse_end": {
+   "N_hex": 37,
+   "d_mm": 0.4148004314573264,
+   "ratio_L1": 3.4291303143206284
+  },
+  "d_0p10mm_region": {
+   "N_hex": 631,
+   "d_mm": 0.10044431974353446,
+   "ratio_L1": 4.550868567597182
+  },
+  "improvement_0p40_to_0p10": {
+   "abs": -1.1217382532765536,
+   "rel_pct": -32.712033386190804,
+   "verdict": "NEGATIVE — untwisted ratio gets WORSE toward fine strands; 'improvement' only exists for F_skin, not for the untwisted bundle"
+  },
+  "finest_end": {
+   "N_hex": 1801,
+   "d_mm": 0.05945429108402666,
+   "ratio_L1": 4.532639112847531,
+   "note": "N=1801 filament limit 4.5326 ~= N=1 solid equal-area exact 4.5295 — untwisted fine bundle converges to solid-conductor behavior"
+  },
+  "flat_below_mm": 0.17128139624304473,
+  "flat_criterion": "largest d such that max-min of ratio_L1 over all d'<=d < 3% of the finest-d value (fine end flattens ~4.53-4.56)",
+  "curve_unique_N": [
+   [
+    1801,
+    0.05945429108402666,
+    0.40233894060577896,
+    1.000034118913899,
+    4.532639112847531,
+    4.532484469400064,
+    4.008950288210578
+   ],
+   [
+    1261,
+    0.0710530161584627,
+    0.48082980600405534,
+    1.0000695953341263,
+    4.5343315728591165,
+    4.5340160264988345,
+    3.969255823986312
+   ],
+   [
+    1027,
+    0.07873264463816385,
+    0.532799370024289,
+    1.000104919723293,
+    4.536177334764222,
+    4.535701450223151,
+    3.9266199360004235
+   ],
+   [
+    817,
+    0.08827323306908945,
+    0.5973624179063896,
+    1.0001657802398962,
+    4.5264595518576884,
+    4.525709278687768,
+    3.9911717236992184
+   ],
+   [
+    631,
+    0.10044431974353446,
+    0.6797265673955581,
+    1.0002778940195245,
+    4.550868567597182,
+    4.549604259782159,
+    3.848149599617786
+   ],
+   [
+    547,
+    0.1078813564217317,
+    0.7300544647398107,
+    1.0003697697153429,
+    4.557712624494419,
+    4.556027943338699,
+    3.776246990776489
+   ],
+   [
+    469,
+    0.11650743475526931,
+    0.7884288420138241,
+    1.0005029375087136,
+    4.552290210195517,
+    4.550001843603709,
+    3.815423678822045
+   ],
+   [
+    397,
+    0.1266323913070849,
+    0.8569464244870507,
+    1.0007017938886849,
+    4.540831510561821,
+    4.537647017615783,
+    3.8391365942385423
+   ],
+   [
+    331,
+    0.13868390588415963,
+    0.9385014059564718,
+    1.0010093172729204,
+    4.562403832533501,
+    4.55780356267111,
+    3.624592903932247
+   ],
+   [
+    271,
+    0.15326938544735183,
+    1.037204229397564,
+    1.0015051254976797,
+    4.621189754907677,
+    4.614244737500684,
+    3.5319887830293384
+   ],
+   [
+    217,
+    0.17128139624304473,
+    1.159095067040836,
+    1.0023458453359473,
+    4.509881079833431,
+    4.499326356086106,
+    3.5863729323148448
+   ],
+   [
+    169,
+    0.19408711707847384,
+    1.3134258881368237,
+    1.0038629341705119,
+    4.649144593378606,
+    4.631254362648798,
+    3.662283300885548
+   ],
+   [
+    127,
+    0.22389180675340853,
+    1.5151201149160065,
+    1.0068241874260895,
+    4.170562249777256,
+    4.142294456035212,
+    3.494661082695355
+   ],
+   [
+    91,
+    0.26449615638736657,
+    1.7898977754994063,
+    1.0132232494455038,
+    4.004513155121688,
+    3.952251547043743,
+    4.026766305881768
+   ],
+   [
+    61,
+    0.32305401577668025,
+    2.186170385621713,
+    1.0290527585290619,
+    3.76038883817987,
+    3.6542235633817435,
+    5.371625134940872
+   ],
+   [
+    37,
+    0.4148004314573264,
+    2.807036516834333,
+    1.07596119792882,
+    3.4291303143206284,
+    3.1870390130439223,
+    9.015941379364609
+   ]
+  ]
+ },
+ "headline_finding": "UNTWISTED scan: finer strands do NOT reduce Rac/Rdc. ratio_L1 rises 3.43 (N=37, d=0.415mm) -> 4.17 (design N=127) -> ~4.53-4.56 flat for d<=~0.15mm, converging onto the solid-conductor value of the same copper area (exact 4.5295). Cause: inductive current crowding to the bundle periphery is set by bundle OD (~2.8-3.0mm, D/delta ~ 19 >> 1), not by strand size — imbalance_L1 stays 3.2-4.6 (current effectively on 1/3 of strands). Strand-diameter selection therefore CANNOT be justified by the untwisted curve: d is chosen so (a) per-strand skin F_skin(d) ~ 1 (0.68% penalty at the design point beta=1.515), and (b) once transposition/braiding equalizes positions (kills the 3-4.6x imbalance), the residual AC loss is F_skin + proximity budget, both monotone in d. Untwisted-Litz ~= solid is the classic result this scan quantifies; it is the reason Problem-2 needs the braided/transposed structure of Q3.",
+ "notes": [
+  "L1 untwisted is a filament model with documented ~10% UNDERestimate vs FEM (design point N=127: L1 4.171 vs FEM 4.66-4.68, no proximity-reaction term); the bias GROWS with beta, so coarse-end rows (N=37/61, beta>2) are even more underestimated. Scan is for SHAPE/trend and design-space reasoning only.",
+  "L1_avg_ref column: azimuthal_average_model with pitch->inf (len factor=1). Averaging model, NOT valid for single-lay twist (rigid rotation keeps internal current sharing unchanged); used ONLY as a ring-averaged-H lower-bound reference. Its d^4 prox term is a small-beta formula and OVERestimates for d>delta: at N=37 the prox part exceeds ohmic (see L1_avg_p_prox column) — coarse-end L1_avg_ref is magnitude-only, do not quote.",
+  "Single-lay twist does not change internal current sharing (rigid rotation); untwisted conclusions carry over up to length factor 1/cos(alpha) ~ 1.00x.",
+  "R_dc bundle = rho/A_cu = 3.4483 mohm/m identical for all rows by construction (N*pi*r_s^2 == A_cu exactly via d_actual).",
+  "Boundary anchors passed: design point L1 4.1706 vs 4.171, F_skin 1.00682; N=1 solid equal-area strand_skin_factor 4.5295 (exact Bessel)."
+ ]
+}
