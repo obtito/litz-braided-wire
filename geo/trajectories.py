@@ -59,7 +59,7 @@ class TwoLevelCounterTwist:
 
     N_BUNDLES = 18  # 布局仅支持 6+12 双圈
 
-    def __init__(self, a_cu=5.0e-6, p1=12e-3, p2=24e-3, s1=+1.0, s2=-1.0,
+    def __init__(self, a_cu=5.0e-6, p1=12.5e-3, p2=25e-3, s1=+1.0, s2=-1.0,
                  margin=1.02, bundle_gap=1.03):
         self.r_s = math.sqrt(a_cu / (7 * self.N_BUNDLES * math.pi))
         self.p1, self.p2, self.s1, self.s2 = p1, p2, s1, s2
@@ -205,7 +205,7 @@ def radial_history(traj, period, n_samples=200):
 
 if __name__ == "__main__":
     # 冒烟自检（审查项逐条验证）
-    t = TwoLevelCounterTwist(a_cu=5.0e-6, p1=12e-3, p2=24e-3)  # P₂=2P₁ 可通约
+    t = TwoLevelCounterTwist(a_cu=5.0e-6, p1=12.5e-3, p2=25e-3)  # P₂=2P₁；1m=80/40 整捻距（规避半整数最坏对齐，PAPERS_NOTES）
     print(f"N={t.N}  d={2*t.r_s*1e3:.4f}mm  A_cu={t.N*math.pi*t.r_s**2*1e6:.4f}mm² "
           f"(J={20/(t.N*math.pi*t.r_s**2)/1e6:.2f})  束OD≤{2*t.bundle_radius()*1e3:.3f}mm")
     assert abs(t.N * math.pi * t.r_s**2 - 5e-6) < 1e-12
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     r0, _ = t.polar(0.0)
     r1, _ = t.polar(t.p1 * (1 + 1e-9))
     assert np.allclose(r0, r1, atol=1e-7), "P₁ 周期性失效"
-    print(f"✓ r(z) 以 P₁ 为周期（损耗周期 {t.p1*1e3:.0f}mm；几何周期 {t.period_geometric()*1e3:.0f}mm，P₂/P₁={t._ratio}）")
+    print(f"✓ r(z) 以 P₁ 为周期（损耗周期 {t.p1*1e3:.1f}mm；几何周期 {t.period_geometric()*1e3:.0f}mm，P₂/P₁={t._ratio}）")
     # 2) 长度因子：中心丝（ρ=0）解析对照
     f_center = t.strand_length_factor(0)  # 微束 0 的中心丝（|C|=r_pitch 外圈为 2r_pitch... 微束 0 在内圈）
     expect = math.sqrt(1 + (2 * math.pi * t.C_norm[0] / t.p2) ** 2)
