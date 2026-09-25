@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>千丝万缕 · 三维拓扑编织 Litz 线</title>
+    <meta name="description" content="200 kHz 下让每一根丝走遍每个位置：编织拓扑 ↔ 交流损耗的定量桥梁（Q4 展示站）" />
+  </head>
+  <body>
+    <header>
+      <h1>千丝万缕<small>Every Strand, Every Position · Q4 展示站</small></h1>
+      <nav>
+        <a href="#/principle">原理</a>
+        <a href="#/viewer">编织查看器</a>
+        <a href="#/data">数据</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ==================== 原理页 ==================== -->
+      <section id="page-principle" class="page">
+        <p class="lead">
+          200 kHz、20 A 工况下，趋肤深度只有 δ = 147.8 μm：实心铜线的交流电阻达到直流的
+          <b>3.65 倍</b>（Bessel 精确解 3.647 / 有限差分 3.647 / 2D FEM 3.649，三法互证）。
+          直觉认为「细丝成束」能救——我们用丝级有限元证明了相反的结论：
+        </p>
+
+        <div class="numbers">
+          <div><b>3.647</b><span>实心线 R<sub>ac</sub>/R<sub>dc</sub>（2 mm，三法互证）</span></div>
+          <div><b>4.653</b><span>未绞合 Litz 束（N=127, d=0.2239 mm）</span></div>
+          <div><b>+2.75%</b><span>未绞合束比等截面实心线（4.5295）更差</span></div>
+          <div><b>438%</b><span>丝间电流失衡 η<sub>I</sub>：外层丝抢流 4 倍</span></div>
+        </div>
+
+        <p class="lead">
+          原因：<b>不换位</b>。外层丝链到的磁通少、阻抗低、抢走电流，环流把细丝的趋肤优势全部吃掉；
+          而且丝径再细也无济于事——失衡由束径决定（D/δ≈19），扫描证实 d→0.17 mm 后比值平台在实心线水平。
+          唯一出路是<b>真实径向换位</b>：让每根丝沿长度轮流占据所有径向位置。
+          这正是 Q4 的主题：给出「完美换位」的判据、构造可实现的编织拓扑、仿真验证并工程化。
+        </p>
+
+        <h2>完美换位判据（RESEARCH.md §7.1，三层，全部可计算）</h2>
+        <p class="lead">
+          <b>离散层</b>：S 站采样得位置矩阵，完美 ⇔ 每丝行是位置的均匀重排（Latin 方 / Berger 循环赛），
+          且 φ-矩相等——对基 Φ={r, r cosθ, r sinθ, r², …}，Σ<sub>s</sub>Φ(pos<sub>k</sub>(s))
+          对所有丝 k 相等；标量距离 D = max|ΣΦ<sub>i</sub>−ΣΦ<sub>j</sub>| / max|ΣΦ| → 0。<br />
+          <b>拓扑层</b>：编织交叉序列 = 辫群 B<sub>N</sub> 中的字 w；周期缆完美 ⇔
+          w<sup>p</sup> ∈ 纯辫 P<sub>n</sub> 且 ⟨π(w)⟩ ≤ S<sub>n</sub> 传递（每丝到达每槽）。<br />
+          <b>连续层</b>：用切片 FEM 得到的实际损耗密度 φ(r,θ) 替换基函数——
+          ∫φ(r<sub>k</sub>(z), θ<sub>k</sub>(z))dz 对所有 k 相等。
+        </p>
+
+        <h2>证据图（Q1/Q2 仿真结果）</h2>
+        <figure>
+          <img src="/figures/q1_fig1_contour.png" alt="Q1 实心线电流密度云图" />
+          <figcaption>
+            Q1 实心线（2 mm，200 kHz）：电流密度 |J| 云图，电流被挤到表面 δ 带内。
+            三种独立方法（Bessel 精确解 / 径向 FD / 2D FEM）给出 R<sub>ac</sub>/R<sub>dc</sub>
+            = 3.647 / 3.647 / 3.649，误差 ≤ 0.1%。来源：paper/q1.md（图 Q1-1）。
+          </figcaption>
+        </figure>
+        <figure class="grid2">
+          <div>
+            <img src="/figures/q1_fig2_jr.png" alt="J(r) 径向分布：FEM vs Bessel 精确解" />
+            <figcaption>
+              J(r) 径向分布：FEM（距离场加密网格）与 Bessel 精确解重合，
+              1/e 深度 160.7 μm vs δ=147.8 μm（图 Q1-2）。
+            </figcaption>
+          </div>
+          <div>
+            <img src="/figures/q2_fig3_comparison.png" alt="未绞合束 vs 实心线对比" />
+            <figcaption>
+              Q2 关键对比：未绞合 127 丝束 R<sub>ac</sub>/R<sub>dc</sub>=4.65 vs 等截面实心
+              4.53——<b>不换位的 Litz 反而更差</b>；单丝自趋肤仅 1.007（图 Q2-3）。
+            </figcaption>
+          </div>
+        </figure>
+
+        <h2>这个网站演示什么</h2>
+        <p class="lead">
+          「编织查看器」页用三维交互展示两种拓扑的丝轨迹 (r(z), θ(z))：单绞向（刚体旋转，
+          r 恒定，D 巨大）与轮转+翻面（方位均匀 + 径向遍历，D→0）。拖动滑块沿 z 剖切，
+          右侧面板实时显示当前站的截面——能直观看到第二种拓扑里每根丝轮流进出内外壳层。
+          轨迹 JSON 由 <code>web/tools/gen_demo.py</code> 生成（当前为示意几何，
+          Q4 正式的角齿轮事件序列轨迹产出后原位替换）。
+        </p>
+      </section>
+
+      <!-- ==================== 查看器页 ==================== -->
+      <section id="page-viewer" class="page">
+        <div class="viewer-bar">
+          <label for="demo-select">拓扑方案</label>
+          <select id="demo-select">
+            <option value="demo1-helix">① 单绞向（对照：无径向换位）</option>
+            <option value="demo2-transpose">② 轮转+翻面（换位示意）</option>
+          </select>
+          <label for="z-slider">剖切 z</label>
+          <input id="z-slider" type="range" min="0" max="48" step="0.12" value="48" />
+          <button id="play-btn" type="button">▶ 播放</button>
+        </div>
+        <div class="viewer-layout">
+          <div id="braid3d"></div>
+          <div class="viewer-side">
+            <canvas id="section2d" width="300" height="300"></canvas>
+            <p id="demo-note"></p>
+          </div>
+        </div>
+        <p class="hint">
+          左键拖动旋转 · 滚轮缩放 · 右键平移。滑块或播放驱动剖切平面沿 z 移动；
+          右侧为当前 z 站截面（丝心按当前半径 viridis 着色，虚线圆为壳层参考）。
+          三维管颜色按丝编号着色，便于跟踪单根丝的旅程。
+        </p>
+      </section>
+
+      <!-- ==================== 数据页 ==================== -->
+      <section id="page-data" class="page">
+        <p class="lead">
+          demo 轨迹数据的结构与换位判据指标。完整仿真数据（多站切片 FEM 的
+          R<sub>ac</sub>/R<sub>dc</sub>、η<sub>I</sub>、D 相关性）由 Q4 流水线产出后接入本页。
+        </p>
+        <div id="data-demos"></div>
+      </section>
+    </main>
+
+    <footer>
+      千丝万缕 · Every Strand, Every Position —— 三维拓扑编织 Litz 线电磁优化设计（48h 黑客松）·
+      数字可溯源至 findings.md 与 paper/q1.md、paper/q2.md · 部署：GitHub Pages
+      Actions · 本地开发与部署说明见 web/README.md
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

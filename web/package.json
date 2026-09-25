@@ -1,0 +1,18 @@
+{
+  "name": "litz-braided-wire-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Q4 展示网站：三维编织 Litz 线拓扑查看器（vanilla three.js + Vite）",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0"
+  }
+}

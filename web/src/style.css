@@ -1,0 +1,125 @@
+/* 千丝万缕 Q4 展示 —— 克制风格：白底、系统字体、少量灰阶 + viridis 点缀 */
+:root {
+  --ink: #1c1f23;
+  --muted: #5b6470;
+  --line: #e3e6ea;
+  --accent: #31688e; /* viridis 中段 */
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  line-height: 1.65;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px 28px;
+  padding: 20px 28px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+header h1 { font-size: 20px; margin: 0; letter-spacing: 0.5px; }
+header h1 small { color: var(--muted); font-weight: 400; margin-left: 10px; font-size: 14px; }
+
+nav { display: flex; gap: 4px; margin-left: auto; }
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+nav a:hover { color: var(--ink); background: #f3f5f7; }
+nav a.active { color: #fff; background: var(--accent); }
+
+main { max-width: 1040px; margin: 0 auto; padding: 28px 28px 60px; }
+section.page { display: none; }
+section.page.active { display: block; }
+
+h2 { font-size: 17px; margin: 34px 0 10px; }
+h2:first-child { margin-top: 6px; }
+p.lead { font-size: 15px; max-width: 780px; }
+
+.muted { color: var(--muted); font-size: 14px; }
+.small { font-size: 12.5px; }
+code { background: #f3f5f7; padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+
+figure { margin: 22px 0; }
+figure img { max-width: 100%; border: 1px solid var(--line); border-radius: 6px; }
+figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; max-width: 760px; }
+
+figure.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+.numbers { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 20px 0; }
+.numbers div { border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; }
+.numbers b { display: block; font-size: 22px; color: var(--accent); }
+.numbers span { font-size: 13px; color: var(--muted); }
+
+/* ---------- 查看器页 ---------- */
+.viewer-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+  padding: 12px 0;
+}
+.viewer-bar label { font-size: 14px; color: var(--muted); }
+.viewer-bar select, .viewer-bar button {
+  font: inherit; font-size: 14px; padding: 6px 12px;
+  border: 1px solid var(--line); border-radius: 6px; background: #fff; cursor: pointer;
+}
+.viewer-bar button:hover { border-color: var(--accent); color: var(--accent); }
+.viewer-bar input[type='range'] { flex: 1; min-width: 220px; accent-color: var(--accent); }
+
+.viewer-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+#braid3d { height: 540px; position: relative; background: #fff; }
+#braid3d canvas { display: block; }
+.viewer-side {
+  border-left: 1px solid var(--line);
+  display: flex; flex-direction: column;
+}
+#section2d { width: 100%; aspect-ratio: 1; flex: 0 0 auto; background: #fff; }
+#demo-note {
+  margin: 0; padding: 12px 14px; font-size: 13px; color: var(--muted);
+  border-top: 1px solid var(--line); flex: 1;
+}
+.hint { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+
+@media (max-width: 860px) {
+  .viewer-layout { grid-template-columns: 1fr; }
+  .viewer-side { border-left: none; border-top: 1px solid var(--line); }
+}
+
+/* ---------- 数据页 ---------- */
+.card { border: 1px solid var(--line); border-radius: 10px; padding: 18px 22px; margin: 18px 0; }
+.card h3 { margin: 0 0 6px; font-size: 16px; }
+.card h3 code { margin-left: 8px; }
+
+table { border-collapse: collapse; margin: 10px 0; font-size: 14px; }
+th, td { text-align: left; padding: 6px 14px 6px 0; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 500; white-space: nowrap; }
+
+canvas.spark { display: block; margin-top: 8px; }
+
+footer {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12.5px;
+  padding: 14px 28px 26px;
+  max-width: 1040px;
+  margin: 0 auto;
+}

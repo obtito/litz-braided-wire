@@ -89,7 +89,7 @@ for x, v in zip(xpos, fem_mean):
 ax.set_xticks(xpos)
 ax.set_xticklabels([f"环{k}\n(ρ≈{r*1e3:.2f}mm)" for k, r in zip(rings, ring_r[rings])])
 ax.set_ylabel("环平均 |I| / 总均值")
-ax.set_title("图 Q2-2　径向失衡：从中心 1.1% 到外环 400%（绞合无法改变——刚性旋转）")
+ax.set_title("图 Q2-2　径向失衡：中心 0.011× → 最外环均值 3.37×（角丝 5.38×）——绞合无法改变（刚性旋转）")
 ax.legend(frameon=False, fontsize=9)
 fig.savefig(f"{FIGDIR}/q2_fig2_rings.png", bbox_inches="tight")
 plt.close(fig)
