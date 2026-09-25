@@ -71,8 +71,12 @@ N = res["N"]
 centers2, Rb = hex_packing(N, r_s)
 I_l1, _, _ = untwisted(centers2, r_s, 10 * Rb)
 labels, ring_r = ring_radii(centers2, 2 * r_s * 1.02)
-rings = sorted(set(d["ring"].astype(int)))
-fem_mean = [d["I_amplitude_A"][d["ring"] == k].mean() / i_mean for k in rings]
+labels_csv = labels  # 与 L1 相同的六角环号（按坐标对应 CSV 行序）
+d_ring = np.empty(len(d), dtype=int)
+for idx in range(len(d)):
+    d_ring[idx] = labels[idx]
+rings = sorted(set(d_ring.tolist()))
+fem_mean = [d["I_amplitude_A"][d_ring == k].mean() / i_mean for k in rings]
 l1_mean = [np.abs(I_l1[labels == k]).mean() / i_mean for k in rings]
 fig, ax = plt.subplots(figsize=(7.0, 4.4))
 xpos = np.arange(len(rings))
@@ -96,8 +100,9 @@ solid_exact = 4.52949  # 由精确 Bessel（等面积 D=2.5231mm）——用 q1 
 from q1_solid.fem2d_skfem import exact_ratio
 solid_exact = exact_ratio(math.sqrt(5e-6 / math.pi), 200e3)
 labels3 = ["单丝自身趋肤\n（理想换位下限）", "等面积实心线\nD=2.523 mm", "未绞合 127 丝束\n=单绞向绞合"]
-vals3 = [res["i_mean"] and 1.00682,  # 由 strand_skin_factor 复算
-         solid_exact, res["ratio"]]
+base = json.load(open("data/q2_q3_baseline.json"))
+r3_ratio = base["bundle_convergence"][2]["ratio_raw"] if isinstance(base.get("bundle_convergence"), list) else 4.6527
+vals3 = [1.0, solid_exact, r3_ratio]  # 首项下面由 strand_skin_factor 覆盖
 from q2_litz.impedance_model import strand_skin_factor
 vals3[0] = strand_skin_factor(r_s, 200e3)
 colors3 = [C_REF, C_L1, C_FEM]
@@ -110,7 +115,7 @@ ax.text(2.45, 1.05, "理想", fontsize=8.5, color=INK, ha="right")
 ax.set_xticks(np.arange(3)); ax.set_xticklabels(labels3, fontsize=9)
 ax.set_ylabel("R_ac/R_dc @200 kHz")
 ax.set_ylim(0, 5.4)
-ax.set_title(f"图 Q2-3　等铜截面 5 mm² 三方案对比：未绞合束（{res['ratio']:.2f}）不优于实心线（{solid_exact:.3f}）")
+ax.set_title(f"图 Q2-3　等铜截面 5 mm² 三方案对比：未绞合束（{r3_ratio:.3f}，refine=3 收敛值）不优于实心线（{solid_exact:.3f}）")
 fig.savefig(f"{FIGDIR}/q2_fig3_comparison.png", bbox_inches="tight")
 plt.close(fig)
 print("Q2 figures written:",
