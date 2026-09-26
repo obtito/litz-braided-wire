@@ -1,18 +1,11 @@
 ---
-
 title: 三维拓扑编织 Litz 线的电磁优化设计
-
 subtitle: 从趋肤效应仿真到「完美编织」的探索
-
 date: 2026-09-26
-
+lang: zh-CN
 nocite: '@*'
-
 bibliography: refs/litz.bib
-
 ---
-
-
 
 # 三维拓扑编织 Litz 线的电磁优化设计
 ## —— 从趋肤效应仿真到「完美编织」的探索
@@ -447,3 +440,9 @@ R504 三环深调度 $S{=}12$（补全点，`data/q3_depth_completion.json`）�
 **网站**（`web/`，Vite + 原生 three.js，无 UI 框架）：三页骨架（原理 / 编织查看器 / 数据，hash 路由）；查看器 `src/braid.js` 用 `TubeGeometry`+自定义 `Curve` 渲染逐丝轨迹、z 向剖切动画与同步 2D 截面；数据页展示轨迹 JSON 内预计算的判据指标。**真实拓扑 demo 已接入并置为主力**（`src/main.js` 的 `DEMOS` 列表首位）：demo3-threering = 三环深调度真实轨迹（`q3_braid/multiring.py` 流水线，$N{=}126$、每 4 站环循环，随 JSON 交付论文同口径判据 $D{=}0.313$：$D_{dwell}{=}0.354$ / $D_\phi{=}0.271$）；demo4-untwisted = 同几何冻结对照（$D{=}0.814$）——网站复算值与论文判据值（0.355 / 0.810，`q3_final_summary.json: D_values`）同序同量级，差异来自轨迹连续化与采样（481 采样 / 48 mm 单周期）。另保留两个示意 demo（`web/tools/gen_demo.py` 生成，2 基 $\{r, r^2\}$ 离散层口径）：demo1 单绞向（$D{=}1.0$ 刚体旋转对照）、demo2 轮转翻面（$D\approx0.006$ 示意几何）；后续拓扑按同格式新增 JSON 并在 `DEMOS` 登记即可，查看器与数据页零改动。**部署管线**：`.github/workflows/deploy.yml`（npm ci → build → GitHub Pages），`vite.config.js` 的 `base='/litz-braided-wire/'`，构建绿（commit f9e8ca4）；**待部署事项**：仓库改名并启用 Pages（Settings → Pages → GitHub Actions）、`public/figures/` 快照刷新（Q1/Q2 图已拷，Q3 三图待拷入）、截止前以公开 URL 验收并同交源码。
 
 **证据清单**：判据与基线 `data/q4_baselines.json`（未绞/单绞向 0.8104 逐位相等、两级 0.5703、实验室系虚假记功 0.138）；拓扑扫描 `data/q4_topopt.json`（112 配置、top3 全套 braid word/槽位表/站点坐标）；判据↔性能 `data/q4_d_rac_points.json` + 图 `figures/q3_fig1_d_rac.png`；性能与地板 `data/q3_final_summary.json`；脚本 `q4_perfect/{criterion,braid_check,rotoflip,run_q4}.py`；网站 `web/`（README 含本地开发与部署全流程）。
+
+
+## 参考文献
+
+::: {#refs}
+:::
