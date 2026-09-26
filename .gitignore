@@ -16,3 +16,11 @@ dist/
 
 # local-only claude settings (skills are tracked, local settings are not)
 .claude/settings.local.json
+
+# vendor-site copy of paywalled paper — 勿再分发, local only (see paper/refs/pdf/MANIFEST.md)
+paper/refs/pdf/sullivan_1999_optimal_choice_for_number_of_strands.pdf
+
+# macOS drag artifacts
+*.textClipping
+# unrelated page, re-added by owner — keep local only
+队友资料/pelican-cycling.html

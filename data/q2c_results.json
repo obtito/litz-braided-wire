@@ -1,0 +1,36 @@
+{
+ "N": 331,
+ "d_mm": 0.13999999999999999,
+ "layout": "circular_concentric",
+ "spacing_mm": 0.15,
+ "a_cu_mm2": 5.083134066061999,
+ "area_deficit_percent": -0.23972957487241597,
+ "size_ladder": [
+  {
+   "size_scale": 1.0,
+   "ratio": 4.452405311775901,
+   "area_deficit_percent": -2.2629688502422085
+  },
+  {
+   "size_scale": 0.5,
+   "ratio": 4.418060977644956,
+   "area_deficit_percent": -0.6915742202377895
+  },
+  {
+   "size_scale": 0.25,
+   "ratio": 4.4083828645277245,
+   "area_deficit_percent": -0.23972957487241597
+  }
+ ],
+ "rdc_mohm": 3.3837483728512407,
+ "rac_mohm": 14.916858344750977,
+ "ratio": 4.4083828645277245,
+ "eta_complex": 3.3791045632675942,
+ "eta_magnitude": 3.2773162047211772,
+ "p_dc_W": 1.3534993491404963,
+ "p_transport_W": 5.558938770971558,
+ "p_within_W": 0.40780456692883327,
+ "dof": 717683,
+ "ref_comsol_circular": 4.40330542877846,
+ "delta_vs_comsol_percent": 0.1153096425262623
+}
