@@ -1,0 +1,42 @@
+{
+ "meta": {
+  "date": "2026-09-26",
+  "note": "h∥ 勘误后权威口径（findings H+19）；q3_first_results/q3_series_l1/q3_126_threering/q3_252_* 为勘误前陈旧数据，论文一律以本表为准",
+  "method": "串联合成（series_l1）+ FEM 锚定 prox 标定 + m̄ 闭式 + h∥ Umetani(22) 修正式；L3 独立验证通过（PEEC 逐丝 0.02%）"
+ },
+ "final_gradient": {
+  "solid_equal_area": 4.5295,
+  "untwisted_127": 4.653,
+  "A_untw126_rigid": 4.6756,
+  "C_twolevel": 3.9916,
+  "R126_threering_deep_S12": 3.6282,
+  "R126_threering_rigid_control": 3.8824,
+  "R252_threering_deep": 2.1344,
+  "R252_rigid_control": 3.9907,
+  "R504_threering": 2.1232,
+  "R504_rigid_control": 3.7326,
+  "umetani_floor_d0.1124": 1.92
+ },
+ "hpar_corrected_mOhm": {
+  "C_twolevel": 0.29,
+  "R126_deep": 1.29,
+  "R252_deep": 0.81,
+  "R504": 0.05
+ },
+ "eta_I": {
+  "A_untw": 0.439,
+  "C": 0.714,
+  "R126_deep": 0.272,
+  "R252_deep": 0.114,
+  "R504": 0.384
+ },
+ "crossover": "修正后换位全域净赢；收益随 d^4 放大；调度深度是隐藏变量（S=6 vs 12 差 1.8×）",
+ "D_values": {
+  "untw": 0.81,
+  "twolevel": 0.57,
+  "rotoflip": 0.508,
+  "threering126": 0.355,
+  "threering252": 0.352,
+  "threering504": 0.431
+ }
+}
