@@ -3,7 +3,7 @@ import './style.css'
 import { BraidViewer, viridis } from './braid.js'
 
 const BASE = import.meta.env.BASE_URL
-const DEMOS = ['demo1-helix', 'demo2-transpose']
+const DEMOS = ['demo3-threering', 'demo4-untwisted', 'demo1-helix', 'demo2-transpose']
 
 const $ = (sel) => document.querySelector(sel)
 const pages = ['principle', 'viewer', 'data']
