@@ -15,7 +15,9 @@
   "R252_rigid_control": 3.9907,
   "R504_threering": 2.1232,
   "R504_rigid_control": 3.7326,
-  "umetani_floor_d0.1124": 1.92
+  "umetani_floor_d0.1124": 1.92,
+  "R252_threering_S6": 4.30324754140657,
+  "R504_threering_deep_S12": 1.5213246396238562
  },
  "hpar_corrected_mOhm": {
   "C_twolevel": 0.29,
@@ -24,13 +26,17 @@
   "R504": 0.05
  },
  "eta_I": {
-  "A_untw": 0.439,
+  "A_untw": 1.439,
   "C": 0.714,
   "R126_deep": 0.272,
   "R252_deep": 0.114,
   "R504": 0.384
  },
- "crossover": "修正后换位全域净赢；收益随 d^4 放大；调度深度是隐藏变量（S=6 vs 12 差 1.8×）",
+ "crossover": {
+  "R252_S6_vs_S12": "4.303 vs 2.134（深/浅 2.02×）",
+  "R504_S6_vs_S12": "2.123 vs 1.521",
+  "note": "换位全域净赢；收益随 d^4 放大；调度深度第三变量（修正 h∥ 口径复测）"
+ },
  "D_values": {
   "untw": 0.81,
   "twolevel": 0.57,
@@ -38,5 +44,14 @@
   "threering126": 0.355,
   "threering252": 0.352,
   "threering504": 0.431
+ },
+ "floor_formula": {
+  "expr": "R_ideal = m̄·F(γs) + 3.369·(d/0.2248)²",
+  "values": {
+   "0.2248": 4.43,
+   "0.1589": null,
+   "0.1124": 1.92
+  },
+  "source": "q4_perfect/run_q4.py + PAPERS_NOTES（Umetani 阶梯）"
  }
 }
