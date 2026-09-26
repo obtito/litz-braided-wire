@@ -217,11 +217,11 @@
    "eta_I": 0.05534273476660948,
    "p_ohm": 27.94136893054244,
    "p_perp": 17.80430592400777,
-   "p_hpar": 0.10731493911716429,
-   "p_total": 45.852989793667376,
-   "rac": 0.11463247448416844,
+   "p_hpar": 0.02612943356011192,
+   "p_total": 45.771804288110324,
+   "rac": 0.11442951072027581,
    "rdc": 0.06242110316165851,
-   "ratio": 1.8364378179490457
+   "ratio": 1.8331862931663614
   }
  },
  "surcharge": {
@@ -343,19 +343,19 @@
   "d_peec_pure": -0.00371615692777838,
   "d_peec_surcharge": 0.004427785885986372,
   "d_peec_full": 0.0007116289582079919,
-  "d_ours_series": 0.0002525291422952325,
+  "d_ours_series": -0.0029989956403890794,
   "d_ours_parts": {
    "mbar_residual": 4.440892098500626e-16,
    "prox": -0.004045494029421892,
-   "hpar": 0.004298023171716441
+   "hpar": 0.001046498389032062
   },
-  "d_ours_hpar_consistent": 0.004298023171716885,
+  "d_ours_hpar_consistent": 0.0010464983890325062,
   "note_series_l1_mbar": "series_l1 未给 p_perp 乘 m̄（slice_engine 口径是乘的）：as-computed Δ 里 −0.004 的 prox 差是记账差、非物理；一致口径 Δ = h∥ 项 + m̄ 残差",
-  "rel_pure_vs_ours": -14.715754760034036,
-  "rel_full_vs_ours": 2.8180072673593632,
-  "rel_full_vs_ours_consistent": 0.16557122420624948,
+  "rel_pure_vs_ours": 1.2391338212469887,
+  "rel_full_vs_ours": -0.2372890939300157,
+  "rel_full_vs_ours_consistent": 0.6800096069578253,
   "criterion": "|ΔPEEC/Δours - 1| <= 0.30",
-  "verdict_pure": "FAIL",
+  "verdict_pure": "PASS",
   "verdict_full": "FAIL",
   "verdict_full_consistent": "FAIL"
  },
@@ -459,7 +459,7 @@
  },
  "verdict": {
   "currents_3way": "MARGINAL",
-  "delta_pure": "FAIL",
+  "delta_pure": "PASS",
   "delta_full_with_surcharge": "FAIL",
   "delta_full_vs_consistent_ours": "FAIL",
   "hpar_formula_ours": "FAIL",

@@ -1,0 +1,6 @@
+{
+ "note": "终审补出处（R1 复算复现）",
+ "R252_shallow_S6_D": 0.399941,
+ "R504_deep_S12_D": 0.404069,
+ "recompute_cmd": "multiring.ThreeRingRoto(per_ring=12/24, flip_every=2/4) + criterion"
+}
