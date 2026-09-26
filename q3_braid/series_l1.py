@@ -94,7 +94,7 @@ def series_solve(traj, strand_r, S=16, f=F0, i_tot=I_RMS, r_air_factor=12):
         dth = np.angle(np.exp(1j * (th2 - th))) / dz_step
         tan = r * np.abs(dth)
         sin = tan / np.sqrt(1 + tan ** 2)
-        hs_par = i_tot * r * sin / (math.pi * alpha_L ** 2)
+        hs_par = i_tot * (alpha_L - r) * tan / (math.pi * alpha_L ** 2)  # Umetani(22) 修正
         p_hpar += float(np.sum(Gs_par * hs_par ** 2))
     p_perp /= len(zs); p_hpar /= len(zs)
     a_cu = N * math.pi * strand_r ** 2

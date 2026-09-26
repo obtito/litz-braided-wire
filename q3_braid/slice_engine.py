@@ -65,7 +65,7 @@ def h_parallel_power(traj, station_data, strand_r, f=F0, i_tot=I_RMS):
         dth = np.angle(np.exp(1j * (th2 - th))) / eps
         tan = r * np.abs(dth)
         sin = tan / np.sqrt(1 + tan ** 2)
-        hs = i_tot * r * sin / (math.pi * alpha_L ** 2)
+        hs = i_tot * (alpha_L - r) * tan / (math.pi * alpha_L ** 2)  # Umetani(22) 修正：(α_L−r) 结构（Biot-Savart 验证）
         acc += float(np.sum(Gs * hs ** 2))
     return acc / len(station_data)
 
